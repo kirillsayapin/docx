@@ -11,10 +11,13 @@
         <script type="text/javascript" src="js/jszip-utils-ie.js"></script>
     <![endif]-->
     <script>
-    var loadFile=function(url,callback){
+    var loadFile=function(url,callback)
+	{
         JSZipUtils.getBinaryContent(url,callback);
     }
-    loadFile("tagExample.docx",function(err,content){
+	
+    loadFile("tagExample.docx", function(err, content)
+	{
         if (err) { throw e};
         doc=new Docxgen(content);
         doc.setData( {"first_name":"Hipp",
@@ -25,8 +28,21 @@
         ) //set the templateVariables
         doc.render() //apply them (replace all occurences of {first_name} by Hipp, ...)
         out=doc.getZip().generate({type:"blob"}) //Output the document using Data-URI
+
        // saveAs(out,"output.docx")
     })
+	/*
+	* Необходимо глубокое тестирование, адаптация для IE(Вместо path можно подавать тело документа, но что будет с форматированием?)
+	*/
+	function print(path) 
+	{
+	   var newWin = window.open(); //Если крашит хром, тогда в параметры кидаем path, при условии что Path не тело документа
+	   newWin.document.write(path);
+	   newWin.document.close();
+	   newWin.print();
+	   newWin.close();
+	}
+	
     </script>
 	<style type="text/css">
 		input[type="text"] {
@@ -54,7 +70,7 @@
 	<div id="dog_num">
 		<h2>Формирование договоров</h2>
 		<input type="text" name="client_id" id="client_id" value="" placeholder="Введите номер договора" />
-		
+		<a href="javascript:void(0)" onclick="print('tagExample.docx');return false;">Печать</a>
 	</div>
 </body>
 </html>
