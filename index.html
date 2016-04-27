@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+	<title>Формирование договоров</title>
+    <script src="js/docxtemplater.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/jszip-utils.js"></script>
+    <!--
+    Mandatory in IE 6, 7, 8 and 9.
+    -->
+    <!--[if IE]>
+        <script type="text/javascript" src="js/jszip-utils-ie.js"></script>
+    <![endif]-->
+    <script>
+    var loadFile=function(url,callback){
+        JSZipUtils.getBinaryContent(url,callback);
+    }
+    loadFile("tagExample.docx",function(err,content){
+        if (err) { throw e};
+        doc=new Docxgen(content);
+        doc.setData( {"first_name":"Hipp",
+            "last_name":"Edgar",
+            "phone":"0652455478",
+            "description":"New Website"
+            }
+        ) //set the templateVariables
+        doc.render() //apply them (replace all occurences of {first_name} by Hipp, ...)
+        out=doc.getZip().generate({type:"blob"}) //Output the document using Data-URI
+       // saveAs(out,"output.docx")
+    })
+    </script>
+	<style type="text/css">
+		input[type="text"] {
+		   border: 1px solid grey;
+		   border-radius: 4px; 
+		   -webkit-border-radius: 4px; 
+		   -moz-border-radius: 4px; 
+		   -khtml-border-radius: 4px; 
+		   background: #ffffff !important; 
+		   outline: none;
+		   width: 250px; 
+		   color: #444; 
+		   font-size: 16px; 
+		   font-family: Tahoma; 
+		   padding:5px;
+		}
+		
+		#dog_num
+		{
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<div id="dog_num">
+		<h2>Формирование договоров</h2>
+		<input type="text" name="client_id" id="client_id" value="" placeholder="Введите номер договора" />
+		
+	</div>
+</body>
+</html>
